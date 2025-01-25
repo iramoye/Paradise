@@ -262,3 +262,4 @@
 	var/blooper_speed = BLOOPER_SPEED_BASELINE
 	var/blooper_volume = 50
 	var/blooper_current_blooper // antispam, will be used in a check
+	var/blooper_timer_ref

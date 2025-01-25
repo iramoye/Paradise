@@ -109,19 +109,19 @@
 			if(SP.speaking && SP.speaking.flags & INNATE)
 				emote("me", EMOTE_AUDIBLE, message_clean, TRUE)
 				return
-	if(client.prefs?.toggles3 & PREFTOGGLE_3_HEAR_BLOOPERS)
-		if(ishuman(speaker))
-			var/mob/living/carbon/human/bloop_source = speaker
-			if(bloop_source.blooper_id || bloop_source.blooper)
-				var/datum/multilingual_say_piece/message_inst = message_pieces[1]
-				var/bloopers = min(round((length_char(message_inst.message) / bloop_source.blooper_speed)) + 1, BLOOPER_MAX_BLOOPERS)
-				var/total_delay
-				bloop_source.blooper_current_blooper = world.time //this is juuuuust random enough to reliably be unique every time send_speech() is called, in most scenarios
-				for(var/i in 1 to bloopers)
-					if(total_delay > BLOOPER_MAX_TIME)
-						break
-					addtimer(CALLBACK(src, PROC_REF(do_blooper), speaker, 7, max(bloop_source.blooper_volume,100), BLOOPER_DO_VARY(bloop_source.blooper_pitch, bloop_source.blooper_pitch_range), blooper_current_blooper),total_delay)
-					total_delay += rand(DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
+	// if(client.prefs?.toggles3 & PREFTOGGLE_3_HEAR_BLOOPERS)
+	// 	if(ishuman(speaker))
+	// 		var/mob/living/carbon/human/bloop_source = speaker
+	// 		if(bloop_source.blooper_id || bloop_source.blooper)
+	// 			var/datum/multilingual_say_piece/message_inst = message_pieces[1]
+	// 			var/bloopers = min(round((length_char(message_inst.message) / bloop_source.blooper_speed)) + 1, BLOOPER_MAX_BLOOPERS)
+	// 			var/total_delay
+	// 			bloop_source.blooper_current_blooper = world.time //this is juuuuust random enough to reliably be unique every time send_speech() is called, in most scenarios
+	// 			for(var/i in 1 to bloopers)
+	// 				if(total_delay > BLOOPER_MAX_TIME)
+	// 					break
+	// 				addtimer(CALLBACK(src, PROC_REF(do_blooper), speaker, 7, max(bloop_source.blooper_volume,100), BLOOPER_DO_VARY(bloop_source.blooper_pitch, bloop_source.blooper_pitch_range), blooper_current_blooper),total_delay)
+	// 				total_delay += rand(DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
 
 
 
@@ -245,7 +245,7 @@
 	blooper_id = id
 	return blooper
 
-/mob/proc/do_blooper(mob/source, distance, volume, pitch, queue_time)
+/mob/proc/do_blooper(blooper, list/listening, mob/source, distance, volume, pitch, queue_time)
 	if(!GLOB.blooper_allowed)
 		return
 	if(queue_time && blooper_current_blooper != queue_time)
@@ -255,7 +255,20 @@
 			return
 	if(!ishuman(source))
 		return
+	var/total_delay
+	var/blooper_tick
 	volume = min(volume, 100)
 	var/turf/T = get_turf(src)
-	src.playsound_local(T, vol=volume, vary = TRUE, frequency = pitch, max_distance = distance, falloff_distance = 0, falloff_exponent = BLOOPER_SOUND_FALLOFF_EXPONENT,S = blooper, distance_multiplier = 1, soundin = null)
+	for(var/mob/M in listening)
+		if(total_delay > BLOOPER_MAX_TIME)
+			total_delay = 0
+			src.playsound_local(T, vol=volume, vary = TRUE, frequency = pitch, max_distance = distance, falloff_distance = 0, falloff_exponent = BLOOPER_SOUND_FALLOFF_EXPONENT,S = blooper, distance_multiplier = 1, soundin = null)
+			break
+
+		total_delay += rand(DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
+
+
+	blooper_tick += 1
+	if(blooper_tick > length(source.blooper))
+		deltimer(source.blooper_timer_ref)
 	//src.playsound_local(T, source.blooper, volume, TRUE, pitch, BLOOPER_SOUND_FALLOFF_EXPONENT, max_distance = distance, falloff_distance =)
