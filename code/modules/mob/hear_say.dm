@@ -232,10 +232,10 @@
 	to_chat(src, rendered)
 
 // Bloopers
-/mob/proc/bp_bloop(bloopsound)
+/mob/living/proc/bp_bloop(bloopsound)
 	blooper = sound(bloopsound)
 
-/mob/proc/set_blooper_id(id)
+/mob/living/proc/set_blooper_id(id)
 	if(!id)
 		return FALSE
 	var/datum/blooper/B = GLOB.blooper_list[id]
@@ -245,7 +245,7 @@
 	blooper_id = id
 	return blooper
 
-/mob/proc/do_blooper(blooper, list/listening, mob/source, distance, volume, pitch, queue_time)
+/mob/living/proc/do_blooper(blooper_count, list/listening, mob/living/source, distance, volume, pitch, queue_time)
 	if(!GLOB.blooper_allowed)
 		return
 	if(queue_time && blooper_current_blooper != queue_time)
@@ -255,20 +255,22 @@
 			return
 	if(!ishuman(source))
 		return
-	var/total_delay
-	var/blooper_tick
+	if(!istype(source, /mob/living)) // only living can hear this
+		return
+	var/mob/living/sourcemob = source
 	volume = min(volume, 100)
 	var/turf/T = get_turf(src)
 	for(var/mob/M in listening)
-		if(total_delay > BLOOPER_MAX_TIME)
-			total_delay = 0
-			src.playsound_local(T, vol=volume, vary = TRUE, frequency = pitch, max_distance = distance, falloff_distance = 0, falloff_exponent = BLOOPER_SOUND_FALLOFF_EXPONENT,S = blooper, distance_multiplier = 1, soundin = null)
+		if(source.blooper_timing_delay > BLOOPER_MAX_TIME)
+			source.blooper_timing_delay = 0
+			src.playsound_local(T, vol=volume, vary = TRUE, frequency = pitch, max_distance = distance, falloff_distance = 0, falloff_exponent = BLOOPER_SOUND_FALLOFF_EXPONENT,S = source.blooper, distance_multiplier = 1, soundin = source.blooper)
+			source.blooper_tick += 1
+			if(source.blooper_tick > blooper_count)
+				deltimer(source.blooper_timer_ref)
 			break
 
-		total_delay += rand(DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
+		source.blooper_timing_delay += rand(DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
 
 
-	blooper_tick += 1
-	if(blooper_tick > length(source.blooper))
-		deltimer(source.blooper_timer_ref)
+
 	//src.playsound_local(T, source.blooper, volume, TRUE, pitch, BLOOPER_SOUND_FALLOFF_EXPONENT, max_distance = distance, falloff_distance =)
