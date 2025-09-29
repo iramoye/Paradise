@@ -26,7 +26,9 @@
 	var/datum/feed_message/newMsg = new
 	newMsg.author = "Editor Mike Hammers"
 	var/datum/trade_destination/affected_dest = pick(GLOB.weighted_mundaneevent_locations)
+	var/datum/news_companies/company = pick(GLOB.weighted_mundaneevent_companies)
 	var/headline = pick(file2list("config/news/trivial.txt"))
+	newMsg.title = replacetext(headline, "{{COMPANY}}", company.name)
 	newMsg.title = replacetext(headline, "{{AFFECTED}}", affected_dest.name)
 
 	GLOB.news_network.get_channel_by_name("The Gibson Gazette")?.add_message(newMsg)
