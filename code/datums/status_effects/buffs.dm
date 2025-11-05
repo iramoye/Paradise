@@ -938,9 +938,7 @@
 	desc = "You are regenerating."
 	icon_state = "drunk2"
 
-/datum/status_effect/flayer_rejuv/on_creation(mob/living/new_owner, extra_duration, extra_heal_amount)
-	if(isnum(extra_duration))
-		duration += extra_duration
+/datum/status_effect/flayer_rejuv/on_creation(mob/living/new_owner, extra_heal_amount)
 	if(isnum(extra_heal_amount))
 		heal_amount += extra_heal_amount
 	return ..()
@@ -981,7 +979,7 @@
 	var/should_deflect = FALSE
 
 /atom/movable/screen/alert/status_effect/quicksilver_form
-	name = "Quicksilver body"
+	name = "Quicksilver Form"
 	desc = "Your body is much less solid."
 	icon_state = "high"
 
@@ -1002,7 +1000,17 @@
 		item_two.equip_to_best_slot(owner)
 		owner.swap_hand()
 	if(should_deflect)
-		ADD_TRAIT(owner, TRAIT_DEFLECTS_PROJECTILES, UNIQUE_TRAIT_SOURCE(src))
+		var/last_reflect_time
+		var/reflect_cooldown = 4 SECONDS
+		var/mob/living/carbon/human/owner = loc
+		if(owner != src)
+			return 0
+		if(world.time - last_reflect_time >= reflect_cooldown)
+			last_reflect_time = world.time
+			return 1
+		if(world.time - last_reflect_time <= 1) // This is so if multiple energy projectiles hit at once, they're all reflected
+			return 1
+		return 0
 	ADD_TRAIT(owner, TRAIT_HANDS_BLOCKED, "[id]")
 	temporary_flag_storage = owner.pass_flags
 	owner.pass_flags |= (PASSTABLE | PASSGRILLE | PASSMOB | PASSFENCE | PASSGIRDER | PASSGLASS | PASSTAKE | PASSBARRICADE)
@@ -1057,7 +1065,7 @@
 	..()
 
 /datum/status_effect/overclock/on_apply()
-	ADD_TRAIT(owner, TRAIT_GOTTAGOFAST, UNIQUE_TRAIT_SOURCE(src))
+	ADD_TRAIT(owner, TRAIT_GOTTAGONOTSOFAST, UNIQUE_TRAIT_SOURCE(src))
 	owner.next_move_modifier -= 0.3 // Same attack speed buff as mephedrone
 	return TRUE
 
@@ -1078,7 +1086,7 @@
 
 /atom/movable/screen/alert/status_effect/overclock
 	name = "Overclocked"
-	desc = "You feel energized, and hot."
+	desc = "You feel energized and hot."
 	icon_state = "high"
 
 #undef COMBUSTION_TEMPERATURE

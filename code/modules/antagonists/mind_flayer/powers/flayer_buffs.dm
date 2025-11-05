@@ -7,15 +7,13 @@
 	checks_nullification = FALSE
 	action_icon = 'icons/mob/actions/flayer_actions.dmi'
 	action_icon_state = "quick_reboot"
-	upgrade_info = "Increase the amount you heal, decrease time between uses, and increase how long you heal for."
+	upgrade_info = "Increase the amount you heal."
 	max_level = 4
-	base_cooldown = 30 SECONDS
+	base_cooldown = 20 SECONDS
 	stat_allowed = UNCONSCIOUS
 	base_cost = 50
 	current_cost = 50 // Innate abilities HAVE to set `current_cost`
 	static_upgrade_increase = 25
-	/// Any extra duration we get from upgrading the spell.
-	var/extra_duration = 0 // The base spell is 5 brute/burn healing a second for 5 seconds
 	/// Any extra healing we get per second from upgrading the spell
 	var/extra_healing = 0
 
@@ -25,16 +23,20 @@
 
 /datum/spell/flayer/self/rejuv/on_apply()
 	..()
-	cooldown_handler.recharge_duration -= 5 SECONDS
-	extra_duration += 2 SECONDS
-	extra_healing += 2
+	switch(level) // Initial healing value is 5
+		if(FLAYER_POWER_LEVEL_TWO)
+			extra_healing = 3
+		if(FLAYER_POWER_LEVEL_THREE)
+			extra_healing = 6
+		if(FLAYER_POWER_LEVEL_FOUR)
+			extra_healing = 8
 
 /datum/spell/flayer/self/quicksilver_form
 	name = "Quicksilver Form"
 	desc = "Allows us to transmute our physical form, letting us phase through glass and non-solid objects."
 	action_icon_state = "blink"
 	power_type = FLAYER_PURCHASABLE_POWER
-	base_cooldown = 40 SECONDS //25% uptime at base
+	base_cooldown = 40 SECONDS // 25% uptime at base
 	category = FLAYER_CATEGORY_DESTROYER
 	stage = 2
 	base_cost = 100
@@ -84,13 +86,14 @@
 	name = "T.E.R.M.I.N.A.T.O.R. Form"
 	desc = "For a short time, you become unable to die and are not slowed down by pain. This will not heal you however, \
 			and you will still die when the duration ends if you are damaged enough. \
-			Using quick reboot in this form will heal massive amounts of stamina damage."
+			Using Quick Reboot in this form will heal massive amounts of stamina damage."
 	power_type = FLAYER_PURCHASABLE_POWER
 	base_cooldown = 5 MINUTES // Base uptime is 20%
 	category = FLAYER_CATEGORY_DESTROYER
 	stage = FLAYER_CAPSTONE_STAGE
 	action_icon = "mutate"
 	base_cost = 200
+	upgrade_info = "Upgrading this improves the recharge rate of our swarm."
 	static_upgrade_increase = 50 // Total cost of 750 swarms
 	max_level = 3
 

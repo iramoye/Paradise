@@ -1,7 +1,7 @@
-//Basically shadow anchor, but the entry and exit point must be computers. I'm not in your walls I'm in your PC
+// Basically shadow anchor, but the entry and exit point must be computers. I'm not in your walls I'm in your PC
 /datum/spell/flayer/computer_recall
 	name = "Traceroute"
-	desc = "Allows us to cast a mark to a computer. To recall us to this computer, cast this next to a different computer. To check your current mark: Alt click."
+	desc = "Allows us to cast a mark to a device with a screen. To recall us to this device, cast this next to a different device. To check your current mark: Alt click."
 	base_cooldown = 60 SECONDS
 	action_icon_state = "pd_cablehop"
 	upgrade_info = "Halve the time it takes to recharge."
@@ -67,7 +67,7 @@
 
 	if(!marked_computer)
 		marked_computer = target
-		flayer.send_swarm_message("You discreetly tap [targets[1]] and mark it as your home computer.")
+		flayer.send_swarm_message("You discreetly tap [targets[1]] and mark it as your home device.")
 		return
 
 	if(SEND_SIGNAL(user, COMSIG_MOVABLE_TELEPORTING, get_turf(user)) & COMPONENT_BLOCK_TELEPORT)
@@ -96,19 +96,19 @@
 
 	playsound(end_turf, 'sound/items/pshoom.ogg', 100, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 	user.forceMove(end_turf)
-	user.pixel_x = 0 //Snap back to the center, then animate the un-shrinking
+	user.pixel_x = 0 // Snap back to the center, then animate the un-shrinking
 	user.pixel_y = 0
 	user.set_body_position(STANDING_UP)
 	animate(user, 0.5 SECONDS, 0, transform = previous)
 	user.visible_message(
-		"<span class='warning'>[user] suddenly crawls through the monitor of [marked_computer]!</span>",
-		"<span class='notice'>As you reform yourself at [marked_computer] you feel the mark you left on it fade.</span>")
+		"<span class='warning'>[user] suddenly crawls through the screen of [marked_computer]!</span>",
+		"<span class='notice'>As you reform yourself at [marked_computer], you feel the mark you left on it fade.</span>")
 	marked_computer = null
 	cooldown_handler.start_recharge()
 
 /datum/spell/flayer/computer_recall/AltClick(mob/user)
 	if(!marked_computer)
-		flayer.send_swarm_message("You do not current have a marked computer.")
+		flayer.send_swarm_message("You do not current have a marked device.")
 		return
 	flayer.send_swarm_message("Your current mark is [marked_computer].")
 
@@ -122,7 +122,7 @@
  * Obtained for free in the Destroyer tree when reaching stage 3
  */
 /datum/spell/flayer/techno_wall
-	name = "Crystalized Firewall"
+	name = "Crystallized Firewall"
 	desc = "Allows us to create a wall between two points. The wall is fragile and allows only ourselves to pass through."
 	base_cooldown = 60 SECONDS
 	action_icon_state = "pd_cablehop"
@@ -174,8 +174,8 @@
 	should_recharge_after_cast = FALSE
 
 /obj/structure/tech_barrier
-	name = "crystalized firewall"
-	desc = "a strange structure of crystalised ... firewall? It's slowly melting away..."
+	name = "crystallized firewall"
+	desc = "A strange structure of crystallized... firewall? It's slowly melting away..."
 	max_integrity = 100
 	icon_state = "blood_barrier"
 	icon = 'icons/effects/vampire_effects.dmi'
@@ -192,12 +192,12 @@
 	START_PROCESSING(SSobj, src)
 	var/icon/our_icon = icon('icons/effects/vampire_effects.dmi', "blood_barrier")
 	var/icon/alpha_mask
-	alpha_mask = new('icons/effects/effects.dmi', "scanline") //Scanline effect.
-	our_icon.AddAlphaMask(alpha_mask) //Finally, let's mix in a distortion effect.
+	alpha_mask = new('icons/effects/effects.dmi', "scanline") // Scanline effect.
+	our_icon.AddAlphaMask(alpha_mask) // Finally, let's mix in a distortion effect.
 	icon = our_icon
 	if(health > 100)
 		name = "frozen ICE-firewall"
-		desc = "a crystalized... ICE-9-Firewall? It's slowly melting away..."
+		desc = "A structure of crystallized... ICE-9-Firewall? It's slowly melting away..."
 		color = list(-1,0,0,0, 0,-1,0,0, 0,0,-1,0, 1,1,1,1, 0,0,0,0)
 		armor = armor.setRating(50, 50, 50, 50, 50, 50, 50, 50, 0)
 	else

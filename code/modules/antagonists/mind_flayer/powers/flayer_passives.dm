@@ -66,7 +66,7 @@
 	name = "Armored Plating"
 	purchase_text = "Increases our natural armor."
 	upgrade_text = "The swarm adds more layers of armored nanites, strengthening the plating even more."
-	upgrade_info = "Further increases base armor by 10"
+	upgrade_info = "Further increases base armor by 10."
 	gain_text = "You feel your chassis being reinforced by the swarm."
 	power_type = FLAYER_PURCHASABLE_POWER
 	max_level = 3
@@ -122,7 +122,7 @@
 /datum/mindflayer_passive/emp_resist
 	name = "Internal Faraday Cage"
 	purchase_text = "Resist EMP effects."
-	upgrade_text = "Faraday cage at max efficiency."
+	upgrade_text = "Faraday cage operating at maximum efficiency."
 	upgrade_info = "Become completely immune to EMPs."
 	gain_text = "Faraday cage operational."
 	power_type = FLAYER_PURCHASABLE_POWER
@@ -197,8 +197,8 @@
 /datum/mindflayer_passive/eye_enhancement
 	name = "Enhanced Optical Sensitivity"
 	purchase_text = "Adjust our optical sensors to see better in the dark."
-	gain_text = "Focusing optics lens apeture."
-	upgrade_info = "Gain the ability to see prey through walls"
+	gain_text = "Focusing optics lens aperture."
+	upgrade_info = "Gain the ability to see prey through walls."
 	upgrade_text = "Increasing visible wavelength to infrared."
 	power_type = FLAYER_PURCHASABLE_POWER
 	max_level = 2
@@ -212,7 +212,7 @@
 			ADD_TRAIT(owner, TRAIT_NIGHT_VISION, UNIQUE_TRAIT_SOURCE(src))
 		if(FLAYER_POWER_LEVEL_TWO)
 			ADD_TRAIT(owner, TRAIT_THERMAL_VISION, UNIQUE_TRAIT_SOURCE(src))
-	var/mob/living/carbon/human/to_enhance = owner //Gotta make sure it calls the right update_sight()
+	var/mob/living/carbon/human/to_enhance = owner // Gotta make sure it calls the right update_sight()
 	to_enhance.update_sight()
 
 /datum/mindflayer_passive/eye_enhancement/on_remove()
@@ -225,7 +225,7 @@
 	name = "Swarm Absorption Efficiency"
 	purchase_text = "Adds a multiplier to the amount of swarms you drain per second."
 	gain_text = "Our mental siphons grow stronger."
-	upgrade_text = "Energy transfer rate increased by 100%"
+	upgrade_text = "Energy transfer rate increased by 100%."
 	upgrade_info = "Further increase the rate of swarm siphoning."
 	power_type = FLAYER_PURCHASABLE_POWER
 	max_level = 3
@@ -339,12 +339,12 @@
 /datum/mindflayer_passive/radio_jammer/on_apply()
 	..()
 	if(!internal_jammer)
-		internal_jammer = new /obj/item/jammer(owner) //Shove it in the flayer's chest
+		internal_jammer = new /obj/item/jammer(owner) // Shove it in the flayer's chest
 		for(var/datum/action/action in internal_jammer.actions)
 			action.background_icon_state = "bg_flayer"
 			action.Grant(owner)
 
-	internal_jammer.range = 15 + ((level - 1) * 5) //Base range of the jammer is 15, each level adds 5 tiles for a max of 25 if you want to be REALLY annoying
+	internal_jammer.range = 15 + ((level - 1) * 5) // Base range of the jammer is 15, each level adds 5 tiles for a max of 25 if you want to be REALLY annoying
 
 	if(level == FLAYER_POWER_LEVEL_THREE)
 		ADD_TRAIT(owner, TRAIT_AI_UNTRACKABLE, "silicon_cham[UID()]")
