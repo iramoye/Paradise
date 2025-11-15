@@ -1,7 +1,7 @@
 /// Hack computer cameras to use them as a secret camera network
 /datum/spell/flayer/surveillance_monitor
 	name = "Camfecting Bug"
-	desc = "Allows us to cast a hack to a computer's webcam. Alt-click the spell to access all your hacked computer webcams."
+	desc = "Allows us to cast a hack to a computers webcam. Alt-click the spell to access all your hacked computer webcams."
 	power_type = FLAYER_PURCHASABLE_POWER
 	category = FLAYER_CATEGORY_INTRUDER
 	base_cooldown = 1 SECONDS
@@ -101,7 +101,7 @@
 
 /datum/spell/flayer/self/heat_sink/cast(list/targets, mob/living/user)
 	var/datum/effect_system/smoke_spread/steam/smoke = new()
-	user.smoke_delay = TRUE // Gives the user a second to get out before the steam affects them too
+	user.smoke_delay = TRUE //Gives the user a second to get out before the steam affects them too
 	smoke.set_up(smoke_effects_spawned, FALSE, user, null)
 	smoke.start()
 
@@ -153,7 +153,7 @@
 	action_icon_state = "magnet" // Uhhhhhhhhhhhhhhhhhhhhhhhhhhh
 	power_type = FLAYER_PURCHASABLE_POWER
 	category = FLAYER_CATEGORY_INTRUDER
-	base_cooldown = 2 SECONDS // The cast time is going to be the main limiting factor, not cooldown
+	base_cooldown = 2 SECONDS //The cast time is going to be the main limiting factor, not cooldown
 	base_cost = 150
 	stage = 3
 	var/hand_type = /obj/item/melee/swarm_hand
@@ -209,7 +209,7 @@
 		qdel(src)
 		return FINISH_ATTACK
 
-	to_chat(user, "<span class='notice'>The mass of swarms vanishes into the cyborg's internals. Success.</span>")
+	to_chat(user, "<span class='notice'>The mass of swarms vanish into the cyborg's internals. Success.</span>")
 	INVOKE_ASYNC(src, PROC_REF(emag_borg), borg, user)
 	qdel(src)
 	return FINISH_ATTACK

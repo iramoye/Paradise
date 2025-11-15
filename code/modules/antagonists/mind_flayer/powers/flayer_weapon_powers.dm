@@ -187,7 +187,7 @@
 
 /datum/spell/flayer/self/weapon/grapple_arm/on_apply()
 	..()
-	cooldown_handler.recharge_duration = base_cooldown - 10 SECONDS * level // Level 1: 15 seconds, level 2: 5 seconds, level 3: No cooldown, just limited by travel time
+	cooldown_handler.recharge_duration = base_cooldown - 10 SECONDS * level //Level 1: 15 seconds, level 2: 5 seconds, level 3: No cooldown, just limited by travel time
 
 /*
  * A slightly slower (5 seconds) version of the basic access tuner
@@ -253,7 +253,7 @@
 
 /obj/item/gun/projectile/revolver/doublebarrel/flayer/process()
 	if(QDELETED(chambered))
-		var/obj/item/ammo_casing/AC = magazine.get_round() // load next casing.
+		var/obj/item/ammo_casing/AC = magazine.get_round() //load next casing.
 		chambered = AC
 
 	if(!COOLDOWN_FINISHED(src, recharge_time))
@@ -270,11 +270,11 @@
 
 /obj/item/gun/projectile/revolver/doublebarrel/flayer/shoot_live_shot(mob/living/user, atom/target, pointblank, message)
 	. = ..()
-	if(chambered) // We have a shell in the chamber
+	if(chambered)//We have a shell in the chamber
 		QDEL_NULL(chambered)
 	if(!magazine.ammo_count())
 		return
-	var/obj/item/ammo_casing/AC = magazine.get_round() // load next casing.
+	var/obj/item/ammo_casing/AC = magazine.get_round() //load next casing.
 	chambered = AC
 
 /obj/item/gun/projectile/revolver/doublebarrel/flayer/attack_self__legacy__attackchain(mob/living/user)
