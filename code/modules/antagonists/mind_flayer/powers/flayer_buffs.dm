@@ -7,7 +7,7 @@
 	checks_nullification = FALSE
 	action_icon = 'icons/mob/actions/flayer_actions.dmi'
 	action_icon_state = "quick_reboot"
-	upgrade_info = "Increase the amount you heal and decrease time between uses."
+	upgrade_info = "Increase the amount you heal."
 	max_level = 4
 	base_cooldown = 30 SECONDS
 	stat_allowed = UNCONSCIOUS
@@ -24,7 +24,6 @@
 
 /datum/spell/flayer/self/rejuv/on_apply()
 	..()
-	cooldown_handler.recharge_duration -= 5 SECONDS
 	switch(level)
 		if(FLAYER_POWER_LEVEL_TWO)
 			extra_healing = 3
