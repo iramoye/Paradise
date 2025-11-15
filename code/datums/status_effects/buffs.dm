@@ -928,7 +928,7 @@
 				P.damage *= 0.85
 
 /datum/status_effect/flayer_rejuv
-	id = "rejuvination"
+	id = "Rejuvenation"
 	duration = 5 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/flayer_rejuv
 	var/heal_amount = 5 // 25 total healing of both brute and burn at base
@@ -938,9 +938,7 @@
 	desc = "You are regenerating."
 	icon_state = "drunk2"
 
-/datum/status_effect/flayer_rejuv/on_creation(mob/living/new_owner, extra_duration, extra_heal_amount)
-	if(isnum(extra_duration))
-		duration += extra_duration
+/datum/status_effect/flayer_rejuv/on_creation(mob/living/new_owner, extra_heal_amount)
 	if(isnum(extra_heal_amount))
 		heal_amount += extra_heal_amount
 	return ..()
