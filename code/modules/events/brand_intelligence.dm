@@ -1,6 +1,10 @@
 /datum/event/brand_intelligence
+	name = "Brand Intelligence"
+	nominal_severity = EVENT_LEVEL_MODERATE
+	role_weights = list(ASSIGNMENT_ENGINEERING = 1, ASSIGNMENT_CREW = 0.4)
+	role_requirements = list(ASSIGNMENT_ENGINEERING = 2, ASSIGNMENT_CREW = 10)
+	noAutoEnd = TRUE
 	announceWhen	= 21
-	endWhen			= 1000	//Ends when all vending machines are subverted anyway.
 
 	var/list/obj/machinery/economy/vending/vendingMachines = list()
 	var/list/obj/machinery/economy/vending/infectedMachines = list()
@@ -28,7 +32,7 @@
 
 /datum/event/brand_intelligence/start()
 	var/list/obj/machinery/economy/vending/leaderables = list()
-	for(var/obj/machinery/economy/vending/candidate in GLOB.machines)
+	for(var/obj/machinery/economy/vending/candidate in SSmachines.get_by_type(/obj/machinery/economy/vending))
 		if(!is_station_level(candidate.z))
 			continue
 		RegisterSignal(candidate, COMSIG_PARENT_QDELETING, PROC_REF(vendor_destroyed))
@@ -47,7 +51,7 @@
 	log_debug("Original brand intelligence machine: [originMachine] ([ADMIN_VV(originMachine,"VV")]) [ADMIN_JMP(originMachine)]")
 
 /datum/event/brand_intelligence/tick()
-	if(originMachine.shut_up || originMachine.wires.is_all_cut())	//if the original vending machine is missing or has it's voice switch flipped
+	if(originMachine?.shut_up || originMachine?.wires.is_all_cut())	//if the original vending machine is missing or has it's voice switch flipped
 		origin_machine_defeated()
 		return
 
@@ -58,12 +62,10 @@
 				// let them become "normal" after turning
 				upriser.shoot_inventory = FALSE
 				upriser.aggressive = FALSE
-				var/mob/living/simple_animal/hostile/mimic/copy/vendor/M = new(upriser.loc, upriser, null)
+				var/mob/living/basic/mimic/copy/vendor/M = new(upriser.loc, upriser, null)
 				M.faction = list("profit")
-				M.speak = rampant_speeches.Copy()
-				M.speak_chance = 15
 			else
-				explosion(upriser.loc, -1, 1, 2, 4, 0)
+				explosion(upriser.loc, -1, 1, 2, 4, 0, cause = "Brand Intelligence Uprising")
 				qdel(upriser)
 
 		log_debug("Brand intelligence: The last vendor has been infected.")

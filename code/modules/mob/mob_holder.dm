@@ -5,8 +5,8 @@
 	icon = 'icons/obj/objects.dmi'
 	slot_flags = ITEM_SLOT_HEAD|ITEM_SLOT_NECK
 
-/obj/item/holder/New()
-	..()
+/obj/item/holder/Initialize(mapload)
+	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/holder/Destroy()
@@ -27,7 +27,7 @@
 
 /obj/item/holder/attackby__legacy__attackchain(obj/item/W as obj, mob/user as mob, params)
 	for(var/mob/M in src.contents)
-		M.attackby__legacy__attackchain(W,user, params)
+		M.attack_by(W, user, params)
 
 /obj/item/holder/proc/show_message(message, m_type, chat_message_type)
 	for(var/mob/living/M in contents)
@@ -78,7 +78,7 @@
 	H.attack_hand(grabber)
 
 	to_chat(grabber, "<span class='notice'>You scoop up \the [src].")
-	to_chat(src, "<span class='notice'>\The [grabber] scoops you up.</span>")
+	to_chat(src, SPAN_NOTICE("\The [grabber] scoops you up."))
 	grabber.status_flags |= PASSEMOTES
 	return H
 
@@ -101,7 +101,6 @@
 	slot_flags = ITEM_SLOT_HEAD
 
 /obj/item/holder/drone/emagged
-	name = "maintenance drone"
 	icon_state = "drone-emagged"
 
 /obj/item/holder/pai
@@ -114,6 +113,7 @@
 	desc = "It's a small, disease-ridden rodent."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "mouse_gray"
+	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/holder/bunny
 	name = "bunny"

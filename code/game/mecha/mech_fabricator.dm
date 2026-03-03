@@ -67,6 +67,9 @@
 	categories = list(
 		"Cyborg",
 		"Cyborg Repair",
+		"Cyborg Upgrades",
+		"IPC",
+		"IPC Upgrades",
 		"MODsuit Construction",
 		"MODsuit Modules",
 		"Ripley",
@@ -79,7 +82,6 @@
 		"Reticence",
 		"Phazon",
 		"Exosuit Equipment",
-		"Cyborg Upgrade Modules",
 		"Medical",
 		"Misc"
 	)
@@ -122,7 +124,7 @@
 	if(!I.tool_start_check(src, user, 0))
 		return
 	output_dir = turn(output_dir, -90)
-	to_chat(user, "<span class='notice'>You change [src] to output to the [dir2text(output_dir)].</span>")
+	to_chat(user, SPAN_NOTICE("You change [src] to output to the [dir2text(output_dir)]."))
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
 	var/coef_mats = 0
@@ -303,20 +305,19 @@
   */
 /obj/machinery/mecha_part_fabricator/proc/can_insert_materials(mob/user)
 	if(panel_open)
-		to_chat(user, "<span class='warning'>[src] cannot be loaded with new materials while opened!</span>")
+		to_chat(user, SPAN_WARNING("[src] cannot be loaded with new materials while opened!"))
 		return FALSE
 	if(being_built)
-		to_chat(user, "<span class='warning'>[src] is currently building a part! Please wait until completion.</span>")
+		to_chat(user, SPAN_WARNING("[src] is currently building a part! Please wait until completion."))
 		return FALSE
 	return TRUE
 
-// Interaction code
-/obj/machinery/mecha_part_fabricator/attackby__legacy__attackchain(obj/item/W, mob/user, params)
-	if(default_deconstruction_screwdriver(user, "fab-o", "fab-idle", W))
-		return
+/obj/machinery/mecha_part_fabricator/item_interaction(mob/living/user, obj/item/used, list/modifiers)
+	if(default_deconstruction_screwdriver(user, "fab-o", "fab-idle", used))
+		return ITEM_INTERACT_COMPLETE
 
-	if(default_deconstruction_crowbar(user, W))
-		return TRUE
+	if(default_deconstruction_crowbar(user, used))
+		return ITEM_INTERACT_COMPLETE
 
 	return ..()
 
@@ -327,7 +328,7 @@
 	if(..())
 		return
 	if(!allowed(user) && !isobserver(user))
-		to_chat(user, "<span class='warning'>Access denied.</span>")
+		to_chat(user, SPAN_WARNING("Access denied."))
 		return
 	ui_interact(user)
 
@@ -459,18 +460,18 @@
 				if(user_pass == C.network_password)
 					C.mechfabs += UID()
 					network_manager_uid = C.UID()
-					to_chat(usr, "<span class='notice'>Successfully linked to <b>[C.network_name]</b>.</span>")
+					to_chat(usr, SPAN_NOTICE("Successfully linked to <b>[C.network_name]</b>."))
 				else
-					to_chat(usr, "<span class='alert'><b>ERROR:</b> Password incorrect.</span>")
+					to_chat(usr, SPAN_ALERT("<b>ERROR:</b> Password incorrect."))
 			else
-				to_chat(usr, "<span class='alert'><b>ERROR:</b> Controller not found. Please file an issue report.</span>")
+				to_chat(usr, SPAN_ALERT("<b>ERROR:</b> Controller not found. Please file an issue report."))
 
 			return TRUE
 
 
 	var/datum/research/files = get_files()
 	if(!files)
-		to_chat(usr, "<span class='danger'>Error - No research network linked.</span>")
+		to_chat(usr, SPAN_DANGER("Error - No research network linked."))
 		return
 
 	. = TRUE
