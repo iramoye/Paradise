@@ -120,7 +120,7 @@
 				return
 
 	if(client.prefs?.toggles3 & PREFTOGGLE_3_HEAR_BLOOPERS)
-		if(ishuman(speaker)) // iratodo: make this not suck
+		if(ishuman(speaker))
 	 		var/mob/living/carbon/human/bloop_source = speaker
 	 		if(bloop_source.blooper_id || bloop_source.blooper)
 	 			var/datum/multilingual_say_piece/message_inst = message_pieces[1]
