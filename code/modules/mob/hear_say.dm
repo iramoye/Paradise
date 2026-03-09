@@ -118,19 +118,20 @@
 			if(SP.speaking && SP.speaking.flags & INNATE)
 				emote("me", EMOTE_AUDIBLE, message_clean, TRUE)
 				return
-	// if(client.prefs?.toggles3 & PREFTOGGLE_3_HEAR_BLOOPERS)
-	// 	if(ishuman(speaker))
-	// 		var/mob/living/carbon/human/bloop_source = speaker
-	// 		if(bloop_source.blooper_id || bloop_source.blooper)
-	// 			var/datum/multilingual_say_piece/message_inst = message_pieces[1]
-	// 			var/bloopers = min(round((length_char(message_inst.message) / bloop_source.blooper_speed)) + 1, BLOOPER_MAX_BLOOPERS)
-	// 			var/total_delay
-	// 			bloop_source.blooper_current_blooper = world.time //this is juuuuust random enough to reliably be unique every time send_speech() is called, in most scenarios
-	// 			for(var/i in 1 to bloopers)
-	// 				if(total_delay > BLOOPER_MAX_TIME)
-	// 					break
-	// 				addtimer(CALLBACK(src, PROC_REF(do_blooper), speaker, 7, max(bloop_source.blooper_volume,100), BLOOPER_DO_VARY(bloop_source.blooper_pitch, bloop_source.blooper_pitch_range), blooper_current_blooper),total_delay)
-	// 				total_delay += rand(DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
+
+	if(client.prefs?.toggles3 & PREFTOGGLE_3_HEAR_BLOOPERS)
+		if(ishuman(speaker)) // iratodo: make this not suck
+	 		var/mob/living/carbon/human/bloop_source = speaker
+	 		if(bloop_source.blooper_id || bloop_source.blooper)
+	 			var/datum/multilingual_say_piece/message_inst = message_pieces[1]
+	 			var/bloopers = min(round((length_char(message_inst.message) / bloop_source.blooper_speed)) + 1, BLOOPER_MAX_BLOOPERS)
+	 			var/total_delay
+				bloop_source.blooper_current_blooper = world.time //this is juuuuust random enough to reliably be unique every time send_speech() is called, in most scenarios
+				for(var/i in 1 to bloopers)
+	 				if(total_delay > BLOOPER_MAX_TIME)
+	 					break
+	 				addtimer(CALLBACK(src, PROC_REF(do_blooper), speaker, 7, max(bloop_source.blooper_volume,100), BLOOPER_DO_VARY(bloop_source.blooper_pitch, bloop_source.blooper_pitch_range), blooper_current_blooper),total_delay)
+	 				total_delay += rand(DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE), DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE) + DS2TICKS(bloop_source.blooper_speed / BLOOPER_SPEED_BASELINE)) TICKS
 
 
 

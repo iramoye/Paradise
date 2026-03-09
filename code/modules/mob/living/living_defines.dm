@@ -143,7 +143,6 @@
 	var/blooper_timer_ref
 	var/blooper_timing_delay
 	var/blooper_tick
-	var/extra_message_range = 0
 
 	/// Points to what specialized dissection information a mob gets.
 	var/datum/xenobiology_surgery_container/surgery_container
