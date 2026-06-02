@@ -460,8 +460,8 @@
 
 /datum/status_effect/regenerative_core/on_apply()
 	ADD_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, id)
-	owner.adjustBruteLoss(-25)
-	owner.adjustFireLoss(-25)
+	owner.adjustBruteLoss(-25, FALSE, robotic = TRUE)
+	owner.adjustFireLoss(-25, FALSE, robotic = TRUE)
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		H.bodytemperature = H.dna.species.body_temperature
