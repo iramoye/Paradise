@@ -115,6 +115,9 @@ GLOBAL_LIST_EMPTY(quirk_paths)
 	if((to_add.species_flags & QUIRK_PLASMAMAN_INCOMPATIBLE) && (active_character.species == "Plasmaman")) //If someone can figure out how to only let plasmaman with a secondary language take this feel free to do that
 		to_chat(src.client, SPAN_WARNING("You can't put that quirk on a plasmaman, you have no species language!"))
 		return FALSE
+	if((to_add.species_flags & QUIRK_VOX_INCOMPATIBLE) && (active_character.species == "Vox"))
+		to_chat(src.client, SPAN_WARNING("You can't put that quirk on a vox character!"))
+		return FALSE
 	active_character.quirks += to_add
 	return TRUE
 

@@ -151,3 +151,10 @@
 	cost = -1
 	trait_to_apply = TRAIT_NEARSIGHT
 	species_flags = QUIRK_SLIME_INCOMPATIBLE
+
+/datum/quirk/noclone
+	name = "Unclonable"
+	desc = "Your genetics don't permit cloning. Slime people and vox cannot take this."
+	cost = -3
+	trait_to_apply = NO_CLONESCAN
+	species_flags = QUIRK_VOX_INCOMPATIBLE
