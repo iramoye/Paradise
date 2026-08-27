@@ -1,5 +1,6 @@
 //Defines used to pass info between the scanner and cloning console
 #define SCANNER_UNCLONEABLE_SPECIES "uncloneable"
+#define SCANNER_UNCLONEABLE_PERSON "cannot clone" // help me
 #define SCANNER_HUSKED "husked"
 #define SCANNER_ABSORBED "absorbed"
 #define SCANNER_NO_SOUL "soulless"

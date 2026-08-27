@@ -591,6 +591,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_HUNGRY "hungry"
 #define TRAIT_NO_WHISPERING "no_whisper"
 #define TRAIT_COOL "cool"
+#define TRAIT_UNCLONEABLE_PERSON "no_clone_person"
 
 //***** TURF TRAITS *****//
 /// Removes slowdown while walking on these tiles.
