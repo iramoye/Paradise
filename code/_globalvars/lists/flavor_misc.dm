@@ -51,7 +51,7 @@ GLOBAL_LIST_INIT(backbaglist, list(DBACKPACK, DSATCHEL, DDUFFLEBAG, GBACKPACK, G
 
 //Chooseable brain types for borgs
 #define MMI_BORG "MMI"
-#define ROBOBRAIN_BORG "Robobrain"
+#define ROBOBRAIN_BORG "Lesser Positronic"
 #define POSITRONIC_BORG "Positronic"
 GLOBAL_LIST_INIT(borg_brain_choices, list(MMI_BORG, ROBOBRAIN_BORG, POSITRONIC_BORG))
 GLOBAL_PROTECT(borg_brain_choices)

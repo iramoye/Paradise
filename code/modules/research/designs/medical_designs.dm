@@ -163,8 +163,8 @@
 	category = list("Medical")
 
 /datum/design/robotic_brain
-	name = "Robotic Brain"
-	desc = "The latest in non-sapient Artificial Intelligences."
+	name = "Lesser Positronic Brain"
+	desc = "A cheaper, less intelligent version of the full positronic brain used in IPCs and cyborgs. Its simplified design makes it easy to produce with equipment as small as a protolathe, while larger positronic brains require dedicated nanofoundries."
 	id = "mmi_robotic"
 	req_tech = list("programming" = 5, "biotech" = 4, "plasmatech" = 3)
 	build_type = PROTOLATHE | MECHFAB

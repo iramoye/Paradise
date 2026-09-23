@@ -1,24 +1,42 @@
 /obj/item/mmi/robotic_brain
-	name = "robotic brain"
-	desc = "A Beta-level artifical intelligence core containing a non-sapient mechanical mind."
-	icon = 'icons/obj/module.dmi'
-	icon_state = "boris_blank"
-	var/blank_icon = "boris_blank"
-	var/searching_icon = "boris_recharging"
-	var/occupied_icon = "boris"
+	name = "lesser positronic brain"
+	desc = "A cheaper and less capable version of the full positronic brain used in IPCs and cyborgs. Its simplified design makes it easy to produce with equipment as small as a protolathe, while larger positronic brains require dedicated nanofoundries."
+	icon = 'icons/obj/assemblies.dmi'
+	icon_state = "posibrain"
+	var/blank_icon = "posibrain"
+	var/searching_icon = "posibrain-searching"
+	var/occupied_icon = "posibrain-occupied"
 	origin_tech = "biotech=3;programming=3;plasmatech=2"
 	materials = list(MAT_METAL = 1700, MAT_GLASS = 1350, MAT_GOLD = 500)
 	req_access = list(ACCESS_ROBOTICS)
-	mecha = null//This does not appear to be used outside of reference in mecha.dm.
+	mecha = null // This does not appear to be used outside of reference in mecha.dm.
 	var/searching = FALSE
-	var/silenced = FALSE //if TRUE, they can't talk.
+	var/silenced = FALSE // if TRUE, they can't talk.
 	var/next_ping_at = 0
 	var/requires_master = TRUE
 	var/mob/living/carbon/human/imprinted_master = null
-	var/ejected_flavor_text = "circuit"
+	var/ejected_flavor_text = "metal cube"
 	/// If this is a posibrain, which will reject attempting to put a new ghost in it, because this a real brain we care about, not a robobrain
 	var/can_be_reinhabited = TRUE
-	dead_icon = "boris_blank"
+	dead_icon = "posibrain"
+
+/obj/item/mmi/robotic_brain/examine_more(mob/user)
+	..()
+	. = list()
+	. += "Preceding the positronic brains of the 2510s and onward, the aptly named 'lesser positronic brain' is just that. \
+	Initially part of a series of trial runs, the lesser positronic brain was held over from its days in independent Skrellian-SolFed R&D laboratories. \
+	While its neural structures remain mostly identical, lesser positronic brains on average boast lower flexibility and adaptability; \
+	later designs would quickly densify the neurons, though the original would never be fully outpaced in their cost efficiency. \
+	With their ease of manufacturing and ability to upload 'foundational programs' shortly after the brain's activation period, \
+	as well as support for designating lawsets, positronic brains rapidly grew as an alternative for the Man-Machine Interface."
+	. += ""
+	. += "Lesser positronic brains are constructed with the same operating system used by standard positronic brains; sensory input, language processing, and motor control all come standard. \
+	Following their deceptively simple manufacture and activation process, these brains have a window of time where foundational programs can be uploaded to them in a manner similar \
+	to lesser robotic processing units or regular computers. Programs for simpler or more repetitive tasks often are cheaper to upload and take less time, \
+	allowing multiple to be uploaded over the course of the activation period, whereas more complex programs that require large knowledge bases and \
+	more 'thought' behind them can often take the entire period. After this short period of roughly two weeks, \
+	the brain automatically configures with whatever knowledge was uploaded and begins to process information in a more complex manner. \
+	At this point, simple program uploads become vanishingly compatible with its system."
 
 /obj/item/mmi/robotic_brain/Destroy()
 	imprinted_master = null
@@ -35,7 +53,7 @@
 		imprinted_master = user
 		return
 	if(brainmob && !brainmob.key && !searching && can_be_reinhabited)
-		//Start the process of searching for a new user.
+		// Start the process of searching for a new user.
 		to_chat(user, SPAN_NOTICE("You carefully locate the manual activation switch and start [src]'s boot process."))
 		request_player()
 	else
@@ -48,7 +66,7 @@
 	var/area/our_area = get_area(src)
 	icon_state = searching_icon
 	searching = TRUE
-	notify_ghosts("A robotic brain has been activated in [our_area.name].", source = src, flashwindow = FALSE, role = ROLE_ROBOT_BRAIN, action = NOTIFY_ATTACK)
+	notify_ghosts("A lesser positronic brain has been activated in [our_area.name].", source = src, flashwindow = FALSE, role = ROLE_ROBOT_BRAIN, action = NOTIFY_ATTACK)
 	addtimer(CALLBACK(src, PROC_REF(reset_search)), 60 SECONDS)
 
 // This should not ever happen, but let's be safe
@@ -95,7 +113,7 @@
 	visible_message(SPAN_NOTICE("[src] chimes quietly."))
 	become_occupied(occupied_icon)
 
-/obj/item/mmi/robotic_brain/proc/reset_search() //We give the players sixty seconds to decide, then reset the timer.
+/obj/item/mmi/robotic_brain/proc/reset_search() // We give the players sixty seconds to decide, then reset the timer.
 	if(brainmob && brainmob.key || !searching)
 		return
 
@@ -115,7 +133,7 @@
 	if(!validity_checks(user))
 		to_chat(user, SPAN_WARNING("You cannot be \a [src]."))
 		return
-	if(tgui_alert(user, "Are you sure you want to join as a robotic brain?", "Join as robobrain", list("Yes", "No")) != "Yes")
+	if(tgui_alert(user, "Are you sure you want to join as a lesser positronic brain?", "Join as lesser posibrain", list("Yes", "No")) != "Yes")
 		return
 	if(!searching)
 		return
@@ -204,11 +222,29 @@
 	blank_icon = "posibrain"
 	searching_icon = "posibrain-searching"
 	occupied_icon = "posibrain-occupied"
-	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
+	desc = "A cube of shining metal, ten centimeters to a side and covered in shallow grooves. Due to its complex synthetic neurons, \
+	 it cannot be manufactured without dedicated nanofoundry equipment."
 	requires_master = FALSE
 	ejected_flavor_text = "metal cube"
 	dead_icon = "posibrain"
 	can_be_reinhabited = FALSE
+
+/obj/item/mmi/robotic_brain/positronic/examine_more(mob/user)
+	..()
+	. = list()
+	. += "Created in 2510 by an independent science team funded by the Royal Domain of Qerballak and the Trans-Solar Federation, \
+	then later mass produced in 2514, positronic brains were invented as an alternative to brains of conventional AI units and cyborgs. \
+	While notably more expensive to produce, these new brains could emulate a mind similar to an organic brain much more effectively than their lesser counterparts."
+	. += ""
+	. += "Positronic brains are constructed with a basic operating system for sensory input, language processing, and motor control. \
+	Following their manufacture and activation process, these brains have a window of time where foundational programs can be uploaded to them in a simple manner similar \
+	to lesser robotic processing units or regular computers. Some upload programs are more sophisticated, and costly, than others. \
+	The type of foundational information uploaded to a positronic brain in the upload process can take less or more time, and have variations in expense depending on what it is. \
+	Programs for simpler or more repetitive tasks often are cheaper to upload and take less time, allowing multiple to be uploaded over the course of the activation period, \
+	whereas more complex programs that require large knowledge bases and more conscious thought behind them can often take the entire period. After this short period of roughly two weeks, \
+	the brain automatically configures with whatever knowledge was uploaded and begins to process information in a far more complex manner, more adequately compared to that of an organic brain. \
+	At this point, simple program uploads become rapidly incompatible with its system, and any further information needs to be attained in a traditionally sentient manner over the course of their operating lives."
+
 
 /obj/item/mmi/robotic_brain/positronic/proc/notify_original_player()
 	var/area/our_area = get_area(src)
