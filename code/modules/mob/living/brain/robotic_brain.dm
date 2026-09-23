@@ -1,6 +1,6 @@
 /obj/item/mmi/robotic_brain
 	name = "lesser positronic brain"
-	desc = "A cheaper and less capable version of the full positronic brain used in IPCs and cyborgs. Its simplified design makes it easy to produce with equipment as small as a protolathe, while larger positronic brains require dedicated nanofoundries."
+	desc = "A cheaper version of the full positronic brain used in IPCs and cyborgs. Its simplified design makes it easy to produce with equipment as small as a protolathe, while larger positronic brains require dedicated nanofoundries."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "posibrain"
 	var/blank_icon = "posibrain"
